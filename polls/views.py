@@ -8,7 +8,7 @@ from django.core import serializers
 from django.http import HttpResponseRedirect, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Trabajador, TrabajadorForm, UserForm, Comentario
+from .models import Trabajador, TrabajadorForm, UserForm, UserFormLogin, Comentario
 from .models import TiposDeServicio
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
@@ -20,23 +20,26 @@ def index(request):
     tipos_de_servicios = TiposDeServicio.objects.all()
     form_trabajador = TrabajadorForm(request.POST)
     form_usuario = UserForm(request.POST)
+    form_usuario_login = UserFormLogin(request.POST)
 
     context = {'trabajadores': trabajadores, 'tipos_de_servicios': tipos_de_servicios,
-               'form_trabajador': form_trabajador, 'form_usuario': form_usuario, 'base_url': settings.STATIC_URL}
+               'form_trabajador': form_trabajador, 'form_usuario': form_usuario, 'form_usuario_login': form_usuario_login,
+               'base_url': settings.STATIC_URL}
     return render(request, 'polls/index.html', context)
 
 
 def login(request):
-    username = request.POST.get('usrname', '')
-    password = request.POST.get('psw', '')
-    user = auth.authenticate(username=username, password=password)
-    if user is not None:
-        auth.login(request, user)
-        messages.success(request, "Bienvenido al sistema {}".format(username), extra_tags="alert-success")
-        return HttpResponseRedirect('/')
-    else:
-        messages.error(request, "¡El usuario o la contraseña son incorrectos!", extra_tags="alert-danger")
-        return HttpResponseRedirect('/')
+    if request.method == 'POST':
+        username = request.POST.get('username1')
+        password = request.POST.get('password1')
+        user = auth.authenticate(username=username, password=password)
+        if user is not None:
+            auth.login(request, user)
+            messages.success(request, "Bienvenido al sistema {}".format(username), extra_tags="alert-success")
+            return HttpResponseRedirect('/')
+        else:
+            messages.error(request, "¡El usuario o la contraseña son incorrectos!", extra_tags="alert-danger")
+            return HttpResponseRedirect('/')
 
 
 def logout(request):
