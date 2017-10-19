@@ -22,6 +22,10 @@ def index(request):
     form_usuario = UserForm(request.POST)
     form_usuario_login = UserFormLogin(request.POST)
 
+    if request.GET.get('srch-term'):
+        tipo = request.GET.get('srch-term')
+        trabajadores = Trabajador.objects.select_related().filter(tiposDeServicio__nombre__icontains=tipo)
+
     context = {'trabajadores': trabajadores, 'tipos_de_servicios': tipos_de_servicios,
                'form_trabajador': form_trabajador, 'form_usuario': form_usuario, 'form_usuario_login': form_usuario_login,
                'base_url': settings.STATIC_URL}
@@ -103,10 +107,9 @@ def add_comment(request):
 @csrf_exempt
 def mostrarTrabajadores(request, tipo=""):
     if tipo == "":
-      lista_trabajadores = Trabajador.objects.all()
+        lista_trabajadores = Trabajador.objects.all()
     else:
-      lista_trabajadores = Trabajador.objects.select_related().filter(tiposDeServicio__nombre__icontains=tipo)
-
+        lista_trabajadores = Trabajador.objects.select_related().filter(tiposDeServicio__nombre__icontains=tipo)
 
     return HttpResponse(serializers.serialize("json", lista_trabajadores))
 
