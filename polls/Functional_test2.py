@@ -100,3 +100,9 @@ class FunctionalTest(TestCase):
 
         p=self.browser.find_element(By.XPATH, '//p[text()="Este es un comentario de prueba"]')
         self.assertIn('Este es un comentario de prueba', p.text)
+
+    def test_lista(self):
+        self.browser.get('http://localhost:8000')
+
+        span=self.browser.find_element(By.XPATH, '//span[text()="Juan Daniel2 Arevalo2"]')
+        self.assertIn('Juan Daniel2 Arevalo2', span.text)
