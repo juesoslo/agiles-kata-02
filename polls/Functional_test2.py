@@ -81,4 +81,4 @@ class FunctionalTest(TestCase):
         self.browser.implicitly_wait(3)
 
         nombre = self.browser.find_element_by_id('id_nombre')
-        self.assertIn('Juan Daniel2', nombre.text)
+        self.assertIn('Juan Daniel2', nombre.get_attribute('value'))
