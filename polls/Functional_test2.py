@@ -99,4 +99,4 @@ class FunctionalTest(TestCase):
         botonGrabar.click()
 
         p=self.browser.find_element(By.XPATH, '//p[text()="Este es un comentario de prueba"]')
-        self.assertIn('Juan Daniel Arevalo', p.text)
+        self.assertIn('Este es un comentario de prueba', p.text)
