@@ -106,3 +106,15 @@ class FunctionalTest(TestCase):
 
         span=self.browser.find_element(By.XPATH, '//span[text()="Juan Daniel2 Arevalo2"]')
         self.assertIn('Juan Daniel2 Arevalo2', span.text)
+
+    def test_buscar(self):
+        self.browser.get('http://localhost:8000')
+
+        buscar = self.browser.find_element_by_id('buscar')
+        buscar.send_keys('Juan Daniel2 Arevalo2')
+
+        botonBuscar = self.browser.find_element_by_id('id_buscar')
+        botonBuscar.click()
+
+        span=self.browser.find_element(By.XPATH, '//span[text()="Juan Daniel2 Arevalo2"]')
+        self.assertNotIn('Juan Daniel2 Arevalo2', span.text)
